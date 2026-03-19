@@ -5,6 +5,8 @@ The Game class encapsulates the entire game state,
 including the board, players, bank, dice, and card decks.
 """
 
+from dataclasses import dataclass
+
 from .config import (
     JAIL_FINE,
     AUCTION_MIN_INCREMENT,
@@ -19,6 +21,15 @@ from .bank import Bank
 from .dice import Dice
 from .cards import CardDeck, CHANCE_CARDS, COMMUNITY_CHEST_CARDS
 from . import ui
+
+
+@dataclass
+class TurnState:
+    """Tracks mutable turn state for a running game."""
+
+    current_index: int = 0
+    turn_number: int = 0
+    running: bool = True
 
 
 
@@ -37,9 +48,7 @@ class Game:
         self.bank = Bank()
         self.dice = Dice()
         self.players = [Player(name) for name in player_names]
-        self.current_index = 0
-        self.turn_number = 0
-        self.running = True
+        self.state = TurnState()
         self.chance_deck = CardDeck(CHANCE_CARDS)
         self.community_deck = CardDeck(COMMUNITY_CHEST_CARDS)
 
@@ -62,22 +71,20 @@ class Game:
         """
         Sets the current player index, turn number, and running status for the game.
         """
-        self.current_index = 0
-        self.turn_number = 0
-        self.running = True
+        self.state = TurnState()
 
     def current_player(self):
         """
         Return the Player whose turn it currently is.
         """
-        return self.players[self.current_index]
+        return self.players[self.state.current_index]
 
     def advance_turn(self):
         """
         Move to the next player in the rotation.
         """
-        self.current_index = (self.current_index + 1) % len(self.players)
-        self.turn_number += 1
+        self.state.current_index = (self.state.current_index + 1) % len(self.players)
+        self.state.turn_number += 1
 
     def play_turn(self):
         """
@@ -85,7 +92,7 @@ class Game:
         """
         player = self.current_player()
         ui.print_banner(
-            f"Turn {self.turn_number + 1}  |  {player.name}  |  ${player.balance}"
+            f"Turn {self.state.turn_number + 1}  |  {player.name}  |  ${player.balance}"
         )
 
         if player.in_jail:
@@ -410,8 +417,8 @@ class Game:
             player.properties.clear()
             if player in self.players:
                 self.players.remove(player)
-            if self.current_index >= len(self.players):
-                self.current_index = 0
+            if self.state.current_index >= len(self.players):
+                self.state.current_index = 0
 
     def find_winner(self):
         """
@@ -430,7 +437,7 @@ class Game:
         for p in self.players:
             print(f"  {p.name} starts with ${p.balance}.")
 
-        while self.running and self.turn_number < MAX_TURNS:
+        while self.state.running and self.state.turn_number < MAX_TURNS:
             if len(self.players) <= 1:
                 break
             self.play_turn()
