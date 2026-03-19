@@ -1,4 +1,5 @@
-import sys
+"""Player state and movement logic for MoneyPoly."""
+
 from .config import STARTING_BALANCE, BOARD_SIZE, GO_SALARY, JAIL_POSITION
 
 
@@ -13,8 +14,6 @@ class Player:
         self.in_jail = False
         self.jail_turns = 0
         self.get_out_of_jail_cards = 0
-        self.is_eliminated = False
-
 
     def add_money(self, amount):
         """Add funds to this player's balance. Amount must be non-negative."""
@@ -42,7 +41,6 @@ class Player:
         Awards the Go salary if the player passes or lands on Go.
         Returns the new board position.
         """
-        old_position = self.position
         self.position = (self.position + steps) % BOARD_SIZE
 
         if self.position == 0:
@@ -57,7 +55,6 @@ class Player:
         self.in_jail = True
         self.jail_turns = 0
 
-
     def add_property(self, prop):
         """Add a property tile to this player's holdings."""
         if prop not in self.properties:
@@ -71,7 +68,6 @@ class Player:
     def count_properties(self):
         """Return the number of properties this player currently owns."""
         return len(self.properties)
-
 
     def status_line(self):
         """Return a concise one-line status string for this player."""
