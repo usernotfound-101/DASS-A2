@@ -5,7 +5,7 @@ class Property:
 
     FULL_GROUP_MULTIPLIER = 2
 
-    def __init__(self, name, position, price, base_rent, group=None):
+    def __init__(self, name, position, price, base_rent):
         self.name = name
         self.position = position
         self.price = price
@@ -13,11 +13,7 @@ class Property:
         self.owner = None
         self.is_mortgaged = False
         self.houses = 0
-
-        # Register with the group immediately on creation
-        self.group = group
-        if group is not None and self not in group.properties:
-            group.properties.append(self)
+    
     @property
     def mortgage_value(self):
         """Return the mortgage payout value for this property."""
@@ -66,6 +62,8 @@ class Property:
 
 
 class PropertyGroup:
+    """Represents a colour group of properties on the MoneyPoly board."""
+
     def __init__(self, name, color):
         self.name = name
         self.color = color
@@ -97,3 +95,4 @@ class PropertyGroup:
 
     def __repr__(self):
         return f"PropertyGroup({self.name!r}, {len(self.properties)} properties)"
+
