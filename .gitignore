@@ -2,3 +2,4 @@
 *.tar
 QuickCart\ System.md
 .venv
+moneypoly/moneypoly/__pycache__
