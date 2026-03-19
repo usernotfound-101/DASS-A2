@@ -1,5 +1,6 @@
+"""Dice mechanics for MoneyPoly."""
+
 import random
-from .config import BOARD_SIZE
 
 class Dice:
     """Simulates a pair of six-sided dice with consecutive-doubles tracking."""
@@ -7,6 +8,7 @@ class Dice:
     def __init__(self):
         self.die1 = 0
         self.die2 = 0
+        self.doubles_streak = 0
         self.reset()
 
     def reset(self):
