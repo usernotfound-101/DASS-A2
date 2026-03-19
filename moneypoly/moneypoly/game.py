@@ -5,10 +5,7 @@ The Game class encapsulates the entire game state,
 including the board, players, bank, dice, and card decks.
 """
 
-import os
-
-from moneypoly.config import (
-    GO_TO_JAIL_POSITION,
+from .config import (
     JAIL_FINE,
     AUCTION_MIN_INCREMENT,
     INCOME_TAX_AMOUNT,
@@ -16,18 +13,26 @@ from moneypoly.config import (
     MAX_TURNS,
     GO_SALARY,
 )
-from moneypoly.player import Player
-from moneypoly.board import Board
-from moneypoly.bank import Bank
-from moneypoly.dice import Dice
-from moneypoly.cards import CardDeck, CHANCE_CARDS, COMMUNITY_CHEST_CARDS
-from moneypoly import ui
+from .player import Player
+from .board import Board
+from .bank import Bank
+from .dice import Dice
+from .cards import CardDeck, CHANCE_CARDS, COMMUNITY_CHEST_CARDS
+from . import ui
+
 
 
 class Game:
-    """Manages the full state and flow of a MoneyPoly game session."""
+    """
+    Manages the full state and flow of a MoneyPoly game session.
+    Encapsulates the entire game state, including the board, players, bank, dice, and card decks.
+    """
 
     def __init__(self, player_names):
+        """
+        Initialize the Game with player names, board, bank, dice, and card decks.
+        Sets up all attributes and initial game state.
+        """
         self.board = Board()
         self.bank = Bank()
         self.dice = Dice()
@@ -38,17 +43,46 @@ class Game:
         self.chance_deck = CardDeck(CHANCE_CARDS)
         self.community_deck = CardDeck(COMMUNITY_CHEST_CARDS)
 
+    def set_board_bank_die(self, board, bank, dice):
+        """
+        Sets the board, bank, and dice for the game.
+        """
+        self.board = board
+        self.bank = bank
+        self.dice = dice
+
+    def set_cards(self, chance_deck, community_deck):
+        """
+        Sets the chance and community chest decks for the game.
+        """
+        self.chance_deck = chance_deck
+        self.community_deck = community_deck
+
+    def set_values(self):
+        """
+        Sets the current player index, turn number, and running status for the game.
+        """
+        self.current_index = 0
+        self.turn_number = 0
+        self.running = True
+
     def current_player(self):
-        """Return the Player whose turn it currently is."""
+        """
+        Return the Player whose turn it currently is.
+        """
         return self.players[self.current_index]
 
     def advance_turn(self):
-        """Move to the next player in the rotation."""
+        """
+        Move to the next player in the rotation.
+        """
         self.current_index = (self.current_index + 1) % len(self.players)
         self.turn_number += 1
 
     def play_turn(self):
-        """Execute one complete turn for the current player."""
+        """
+        Execute one complete turn for the current player.
+        """
         player = self.current_player()
         ui.print_banner(
             f"Turn {self.turn_number + 1}  |  {player.name}  |  ${player.balance}"
@@ -79,7 +113,9 @@ class Game:
         self.advance_turn()
 
     def _move_and_resolve(self, player, steps):
-        """Move `player` by `steps` and trigger whatever tile they land on."""
+        """
+        Move `player` by `steps` and trigger whatever tile they land on.
+        """
         player.move(steps)
         position = player.position
         tile = self.board.get_tile_type(position)
@@ -124,7 +160,9 @@ class Game:
 
 
     def _handle_property_tile(self, player, prop):
-        """Decide what to do when `player` lands on a property tile."""
+        """
+        Decide what to do when `player` lands on a property tile.
+        """
         if prop.owner is None:
             print(f"  {prop.name} is unowned — asking price ${prop.price}.")
             choice = input("  Buy (b), Auction (a), or Skip (s)? ").strip().lower()
@@ -169,7 +207,9 @@ class Game:
         print(f"  {player.name} paid ${rent} rent on {prop.name} to {prop.owner.name}.")
 
     def mortgage_property(self, player, prop):
-        """Mortgage `prop` owned by `player` and credit them the payout."""
+        """
+        Mortgage `prop` owned by `player` and credit them the payout.
+        """
         if prop.owner != player:
             print(f"  {player.name} does not own {prop.name}.")
             return False
@@ -183,7 +223,9 @@ class Game:
         return True
 
     def unmortgage_property(self, player, prop):
-        """Lift the mortgage on `prop`, charging the player the redemption cost."""
+        """
+        Lift the mortgage on `prop`, charging the player the redemption cost.
+        """
         if prop.owner != player:
             print(f"  {player.name} does not own {prop.name}.")
             return False
@@ -223,7 +265,9 @@ class Game:
         return True
 
     def auction_property(self, prop):
-        """Run an open auction for `prop` among all active players."""
+        """
+        Run an open auction for `prop` among all active players.
+        """
         print(f"\n  [Auction] Bidding on {prop.name} (listed at ${prop.price})")
         highest_bid = 0
         highest_bidder = None
@@ -259,7 +303,9 @@ class Game:
             print(f"  No bids placed. {prop.name} remains unowned.")
 
     def _handle_jail_turn(self, player):
-        """Process a jailed player's turn — offer to pay fine or use card."""
+        """
+        Process a jailed player's turn — offer to pay fine or use card.
+        """
         print(f"  {player.name} is in jail (turn {player.jail_turns + 1}/3).")
 
         # Use a Get Out of Jail Free card if available
@@ -300,7 +346,9 @@ class Game:
             self._move_and_resolve(player, roll)
 
     def _apply_card(self, player, card):
-        """Apply the effect of a drawn Chance or Community Chest card."""
+        """
+        Apply the effect of a drawn Chance or Community Chest card.
+        """
         if card is None:
             return
         print(f"  Card drawn: \"{card['description']}\"")
@@ -349,7 +397,9 @@ class Game:
 
 
     def _check_bankruptcy(self, player):
-        """Eliminate `player` from the game if they are bankrupt."""
+        """
+        Eliminate `player` from the game if they are bankrupt.
+        """
         if player.is_bankrupt():
             print(f"\n  *** {player.name} is bankrupt and has been eliminated! ***")
             player.is_eliminated = True
@@ -364,13 +414,17 @@ class Game:
                 self.current_index = 0
 
     def find_winner(self):
-        """Return the player with the highest net worth."""
+        """
+        Return the player with the highest net worth.
+        """
         if not self.players:
             return None
         return min(self.players, key=lambda p: p.net_worth())
 
     def run(self):
-        """Run the game loop until only one player remains or turns run out."""
+        """
+        Run the game loop until only one player remains or turns run out.
+        """
         ui.print_banner("Welcome to MoneyPoly!")
         print()
         for p in self.players:
@@ -408,7 +462,7 @@ class Game:
 
             if choice == 0:
                 break
-            elif choice == 1:
+            if choice == 1:
                 ui.print_standings(self.players)
             elif choice == 2:
                 ui.print_board_ownership(self.board)
@@ -424,7 +478,9 @@ class Game:
                     self.bank.give_loan(player, amount)
 
     def _menu_mortgage(self, player):
-        """Interactively select a property to mortgage."""
+        """
+        Interactively select a property to mortgage.
+        """
         mortgageable = [p for p in player.properties if not p.is_mortgaged]
         if not mortgageable:
             print("  No properties available to mortgage.")
@@ -436,7 +492,9 @@ class Game:
             self.mortgage_property(player, mortgageable[idx])
 
     def _menu_unmortgage(self, player):
-        """Interactively select a mortgaged property to redeem."""
+        """
+        Interactively select a mortgaged property to redeem.
+        """
         mortgaged = [p for p in player.properties if p.is_mortgaged]
         if not mortgaged:
             print("  No mortgaged properties to redeem.")
@@ -449,7 +507,9 @@ class Game:
             self.unmortgage_property(player, mortgaged[idx])
 
     def _menu_trade(self, player):
-        """Interactively set up a trade between the current player and another."""
+        """
+        Interactively set up a trade between the current player and another.
+        """
         others = [p for p in self.players if p != player]
         if not others:
             print("  No other players to trade with.")
