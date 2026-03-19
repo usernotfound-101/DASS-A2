@@ -1,4 +1,4 @@
-"""Property and property-group models for moneypoly."""
+"""Property and property-group models for MoneyPoly."""
 
 class Property:
     """Represents a single purchasable property tile on the MoneyPoly board."""
@@ -12,8 +12,8 @@ class Property:
         self.base_rent = base_rent
         self.owner = None
         self.is_mortgaged = False
-        self.houses = 0
-    
+        self.group = None
+
     @property
     def mortgage_value(self):
         """Return the mortgage payout value for this property."""
@@ -62,7 +62,7 @@ class Property:
 
 
 class PropertyGroup:
-    """Represents a colour group of properties on the MoneyPoly board."""
+    """Represents a color set and the properties that belong to it."""
 
     def __init__(self, name, color):
         self.name = name
@@ -79,7 +79,7 @@ class PropertyGroup:
         """Return True if every property in this group is owned by `player`."""
         if player is None:
             return False
-        return any(p.owner == player for p in self.properties)
+        return all(p.owner == player for p in self.properties)
 
     def get_owner_counts(self):
         """Return a dict mapping each owner to how many properties they hold in this group."""
@@ -95,4 +95,3 @@ class PropertyGroup:
 
     def __repr__(self):
         return f"PropertyGroup({self.name!r}, {len(self.properties)} properties)"
-
