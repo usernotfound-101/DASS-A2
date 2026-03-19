@@ -66,18 +66,66 @@ CHANCE_CARDS = [
 ]
 
 COMMUNITY_CHEST_CARDS = [
-    {"description": "Bank error in your favour. Collect $200.",              "action": "collect",  "value": 200},
-    {"description": "Doctor's fees. Pay $50.",                               "action": "pay",      "value": 50},
-    {"description": "From sale of stock you get $50.",                       "action": "collect",  "value": 50},
-    {"description": "Go to Jail.",                                           "action": "jail",     "value": 0},
-    {"description": "Holiday fund matures. Receive $100.",                   "action": "collect",  "value": 100},
-    {"description": "Income tax refund. Collect $20.",                       "action": "collect",  "value": 20},
-    {"description": "It is your birthday. Collect $10 from every player.",   "action": "birthday", "value": 10},
-    {"description": "Life insurance matures. Collect $100.",                 "action": "collect",  "value": 100},
-    {"description": "Pay hospital fees of $100.",                            "action": "pay",      "value": 100},
-    {"description": "Pay school fees of $50.",                               "action": "pay",      "value": 50},
-    {"description": "Receive $25 consultancy fee.",                          "action": "collect",  "value": 25},
-    {"description": "Get Out of Jail Free.",                                 "action": "jail_free","value": 0},
+    {
+        "description": "Bank error in your favour. Collect $200.",
+        "action": "collect",
+        "value": 200
+    },
+    {
+        "description": "Doctor's fees. Pay $50.",
+        "action": "pay",
+        "value": 50
+    },
+    {
+        "description": "From sale of stock you get $50.",
+        "action": "collect",
+        "value": 50
+    },
+    {
+        "description": "Go to Jail.",
+        "action": "jail",
+        "value": 0
+    },
+    {
+        "description": "Holiday fund matures. Receive $100.",
+        "action": "collect",
+        "value": 100
+    },
+    {
+        "description": "Income tax refund. Collect $20.",
+        "action": "collect",
+        "value": 20
+    },
+    {
+        "description": "It is your birthday. Collect $10 from every player.",
+        "action": "birthday",
+        "value": 10
+    },
+    {
+        "description": "Life insurance matures. Collect $100.",
+        "action": "collect",
+        "value": 100
+    },
+    {
+        "description": "Pay hospital fees of $100.",
+        "action": "pay",
+        "value": 100
+    },
+    {
+        "description": "Pay school fees of $50.",
+        "action": "pay",
+        "value": 50
+    },
+    {
+        "description": "Receive $25 consultancy fee.",
+        "action": "collect",
+        "value": 25
+    },
+    {
+        "description": "Get Out of Jail Free.",
+        "action": "jail_free",
+        "value": 0
+    },
 ]
 
 
