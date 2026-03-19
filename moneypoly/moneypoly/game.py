@@ -1,3 +1,10 @@
+"""
+This module links all the components of the MoneyPoly game together, 
+managing and running the actual game.
+The Game class encapsulates the entire game state, 
+including the board, players, bank, dice, and card decks.
+"""
+
 import os
 
 from moneypoly.config import (
@@ -378,7 +385,7 @@ class Game:
 
         winner = self.find_winner()
         if winner:
-            ui.print_banner(f"GAME OVER")
+            ui.print_banner("GAME OVER")
             print(f"\n  {winner.name} wins with a net worth of ${winner.net_worth()}!\n")
         else:
             print("\n  The game ended with no players remaining.")
@@ -466,4 +473,3 @@ class Game:
             f"  Cash to receive from {partner.name}: $", default=0
         )
         self.trade(player, partner, chosen_prop, cash)
-        
