@@ -13,3 +13,9 @@ Iteration 18: Reduced Game instance attributes via TurnState
 - Added TurnState dataclass in game.py to hold current_index, turn_number, and running.
 - Replaced direct Game fields with self.state references in current_player, advance_turn, play_turn, _check_bankruptcy, set_values, and run.
 - Goal: resolve too-many-instance-attributes warning in game.py while preserving behavior.
+
+Iteration 19: Reduced _apply_card branching with action dispatch
+- Refactored _apply_card in game.py to use an action-to-handler dispatch dictionary.
+- Added helper handlers: _card_collect, _card_pay, _card_jail, _card_jail_free, _card_move_to, _card_birthday, _card_collect_from_all.
+- Kept gameplay behavior unchanged while reducing function branch count.
+- Goal: resolve too-many-branches warning in game.py.
