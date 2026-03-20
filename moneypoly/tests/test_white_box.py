@@ -54,7 +54,9 @@ class TestWhiteBoxCases(unittest.TestCase):
         start_player = self.a.balance
         start_bank = self.game.bank.get_balance()
 
-        with patch("moneypoly.ui.confirm", side_effect=[False, True]):
+        with patch("moneypoly.ui.confirm", side_effect=[True]), patch.object(
+            self.game.dice, "roll", return_value=1
+        ), patch.object(self.game.board, "get_tile_type", return_value="blank"):
             self.game._handle_jail_turn(self.a)
 
         self.assertEqual(self.a.balance, start_player - 50)
