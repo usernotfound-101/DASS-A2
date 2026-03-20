@@ -448,7 +448,7 @@ class Game:
         """
         if not self.players:
             return None
-        return min(self.players, key=lambda p: p.net_worth())
+        return max(self.players, key=lambda p: p.net_worth())
 
     def run(self):
         """
