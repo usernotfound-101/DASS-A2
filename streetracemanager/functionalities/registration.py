@@ -1,22 +1,30 @@
-class Person:
+from dataclasses import dataclass
 
-    def __init__(self, name, age, gender):
-        self.name = name
-        self.age = age
-        self.gender = gender
+
+@dataclass(slots=True)
+class Person:
+    name: str
+    role: str | None = None
+
 
 class People:
-
     def __init__(self):
-        self.registrars = []
+        self._registrars: dict[str, Person] = {}
 
-    def register(self, name, age, gender):
-        this_guy = Person(name, age, gender)
-        self.registrars.append(this_guy)
-        return this_guy
+    @property
+    def registrars(self) -> list[Person]:
+        return list(self._registrars.values())
 
-    def get_by_name(self, name):
-        for registrant in self.registrars:
-            if registrant.name == name:
-                return registrant
-        return None
+    def register(self, name: str, role: str | None = None) -> Person:
+        normalized_name = name.strip()
+        if not normalized_name:
+            raise ValueError("Name cannot be empty")
+        if normalized_name in self._registrars:
+            raise ValueError(f"Person already registered: {normalized_name}")
+
+        person = Person(normalized_name, role)
+        self._registrars[normalized_name] = person
+        return person
+
+    def get_by_name(self, name: str) -> Person | None:
+        return self._registrars.get(name.strip())
