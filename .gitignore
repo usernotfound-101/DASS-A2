@@ -3,3 +3,8 @@
 QuickCart\ System.md
 .venv
 moneypoly/moneypoly/__pycache__
+.aider*
+.claude
+streetracemanager/__pycache__
+__pycache__/
+streetracemanager/tests/

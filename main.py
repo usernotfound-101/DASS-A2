@@ -1,5 +1,8 @@
+from streetracemanager.system import run_cli
+
+
 def main():
-    print("Hello from dass-a2!")
+    run_cli()
 
 
 if __name__ == "__main__":

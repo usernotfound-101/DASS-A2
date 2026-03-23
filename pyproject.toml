@@ -5,3 +5,6 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = ["pylint"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
