@@ -1,1 +1,0 @@
-"""StreetRace Manager package."""

@@ -7,4 +7,11 @@ moneypoly/moneypoly/__pycache__
 .claude
 streetracemanager/__pycache__
 __pycache__/
-streetracemanager/tests/
+blobs/
+.pytest_cache/
+index.json
+manifest.json
+moneypoly_edits.md
+oci-layout
+pyproject.toml
+QUICKCART_COMPREHENSIVE_TEST_REPORT.md
